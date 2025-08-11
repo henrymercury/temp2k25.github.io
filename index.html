@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redirecionamento em Contagem Regressiva</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #1d1f20, #323436);
+            font-family: Arial, sans-serif;
+            color: white;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            width: 300px;
+        }
+        h1 {
+            font-size: 1.4em;
+            margin-bottom: 20px;
+        }
+        .contador {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #ffd700;
+        }
+        .progress {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            height: 10px;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #ffd700, #ff6600);
+            width: 0%;
+            transition: width 1s linear;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Você será redirecionado em</h1>
+        <div class="contador" id="contador">0</div>
+        <div class="progress">
+            <div class="progress-bar" id="barra"></div>
+        </div>
+    </div>
+    <script>
+        // Pegando parâmetros da URL (?tempo=10&url=...)
+        const params = new URLSearchParams(window.location.search);
+        let segundos = parseInt(params.get("tempo")) || 5; // Padrão: 5 segundos
+        const destino = params.get("url") || "https://t.me/BucetaconfortaveI"; // Padrão: seu Telegram
+        const contador = document.getElementById("contador");
+        const barra = document.getElementById("barra");
+        const total = segundos;
+        contador.textContent = segundos;
+        const intervalo = setInterval(() => {
+            segundos--;
+            contador.textContent = segundos;
+            barra.style.width = ((total - segundos) / total) * 100 + "%";
+            if (segundos <= 0) {
+                clearInterval(intervalo);
+                window.location.href = destino;
+            }
+        }, 1000);
+        // Inicia barra no carregamento
+        barra.style.width = ((total - segundos) / total) * 100 + "%";
+    </script>
+</body>
+</html>
